@@ -1,0 +1,83 @@
+% Preamble
+\documentclass[11pt]{article}
+\title{RadixSort}
+%\date{} 使title不显示默认时间格式，可以指定时间
+\author{Johnny}
+\setlength{\parskip}{10px}
+% Packages
+%\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=3.5cm}
+
+% Document
+\begin{document}
+    \maketitle
+    \section{Conception}
+    Radix sort belongs to "distributed sort", also known as the "bucket sort" or "bin sort".
+    As the name implies, it distributes the elements to be sorted into certain "buckets" through partial information
+    of the key value, so as to achieve the sorting effect.
+    Radix sort algorithm is a sort of stability and its time complexity is $O(n\log_rm)$, where r is the radix taken,
+    and m is the number of heaps.
+    In some cases, the efficiency of the radix sort algorithm is higher than other ranking algorithms.
+
+    \section{Algorithm Flow}
+    \subsection{step 1.}
+    Choose a number system like binary or decimal or octal as Radix based on the given array then add zeros in head to make
+    all the numbers have the same digits.
+    \subsection{step 2.}
+    The corresponding number of buckets(containers) like array is allocated according to the taken Radix System.
+    For example, if we choose decimal, the order of the buckets is 0 - 9.
+    Then put all numbers into the buckets according to their least significant digit, which called Least Significant Digit first(LSD).
+    Of course you can distribute them according to their most significant digit, but the sequence of array is from large to small,
+    which called Most Significant Digit first(MSD).
+    And the following steps, we take LSD as an example.
+    \subsection{step 3.}
+    Now, we put the buckets with the numbers in step 2 back into the original array according to the serial number of the bucket.
+    Then we put all numbers into the buckets again according to the last digit of the Least Digit, which is very similar to step2.
+    \subsection{step 4.}
+    Repeat the above steps until we have finished the last loading and unloading which is depend on the most digit.
+    And you will amazingly find that the numbers are already in order at this time.
+
+    \section{Experiment}
+    In the experiments, the version 1 uses decimal as the Radix and version 2 use binary as the base.\par
+%    我们并没有显式的把所有数的位数补齐，而是以最大的数的位数为基准，直接取出他们的各个位数。对于那些位数不足的数，直接返回0即可
+    \noindent In version1(\emph{code04\_RadixSortV1Decimal.java}), we didn't explicitly fill in the digits of all numbers,
+    but took the digits of the largest one as a benchmark and directly took out their digits.For those numbers with
+    insufficient digits, just return 0 directly.This step is mainly reflected in the Method \emph{getdDigits()}.
+
+    %我是基于二进制，我本以为可以效仿版本1，只更改RADIX的值，但是出了很多错误，所以进行了更改。更好后的代码很简单，一看就懂。
+    \noindent In version2(\emph{code05\_RadixSortV2Binary}), I'm based on binary.I thought I could imitate the version 1 and
+    only change the value of RADIX,but there were many errors, so I changed it.The better code is very simple to understand.
+
+    \noindent In version3(\emph{code06\_RadixSortV3Elegance}) which is taught ZuoShen used an array count to record the times
+    of the current digit, instead of creating some containers.
+
+    \section{Complexity Analysis}
+    \subsection{Time Complexity}
+    In Radix Sorting Alogrithm, set r to be the number of Radix Digit System, and m is the maximum number of digits after conversion
+    based on the selected Radix Digit System, then its time complexity is $O(n\log_rm)$.
+    For example, in code version1(\emph{code04\_RadixSortV1Decimal.java}), the Radix is decimal, and the maximum number is 9989,
+    which is 4 digits.The the time complexity is $O(n\lg9989) \simeq O(n)$.This is the advantage of Radix Sort.
+    %而在code v2中，r=2，这是显而易见的。最大数是89，但是并不意味着m=2，必须先把89转为2进制后，计算这个最大长度m
+    In code version2(\emph{code05\_RadixSortV2Binary}) the r is 2,which is obvious.The maximum number is 89, but it doesn't mean
+    that m is 2.You must covert 89 to binary to calculate the maximum length m(7).
+    \subsection{Space Complexity}
+    The Space Complexity of Radix Sort is $O(n)$.
+
+    \section{Conclusion}
+    %基数排序是一种稳定快速的排序算法。但是因为它通常要求数据是非负正数，而且比较浪费空间，因此使用并不广泛。
+    %在基数为2进制的v2实验中，我陷入了一个误区，试图希望把一个数据全是二进制的数组使用基数排序方法排序后，得到一个有序数组，并且仍然是二进制的数据。
+    %但是发现很难做到，因为我没有办法给一个参数变量加上二进制的前缀0b，它只能存在于常量。就是这样的一个问题耽误了好长时间。不过我学到了一个取一个数
+    %二进制位数的好方法，那就是 num >> i & 1. 其中num是该数的十进制形式，i取值0，1，2... 代表该数的二进制从右往左取每一位数字。
+    %V3版本是左神教的最优雅完美的写法，以后只用这个。
+    Radix Sort is a stable and fast sorting algorithm.But because it usually requires data to be non-negative and positive and it wastes
+    space, it is not widely used.
+    In the code version2(\emph{code05\_RadixSortV2Binary}) experiment where the Radix System is binary, I fell into a misunderstanding.
+    I tried to get an ordered after sorting an array with all binary data using the Radix Sort Method, and it was still binary number.
+    But I found it difficult to do, because I have no way to add binary prefix '0b' to a parameter variable, it can only exist in constants.
+    It is such a problem that delayed me for a long time.But I learned a new method to get the binary digits of a number, that is $num \gg i \& 1$,
+    where num is the decimal form of the number and i takes the value 0,1,2... which represents the binary value of the number take each digit number
+    from right to left.
+    The code version3(\emph{code06\_RadixSortV3Elegance}) is the most elegant and perfect method taught by ZuoShen, and I will only use this in the future.
+
+\end{document}
